@@ -1,0 +1,33 @@
+services:
+  mongo:
+    image: mongo:5.0
+    container_name: yapi-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: yapi
+      MONGO_INITDB_ROOT_USERNAME: yapiadmin     # 设置 MongoDB 管理员用户名
+      MONGO_INITDB_ROOT_PASSWORD: yapipassw     # 设置管理员密码
+
+  yapi:
+    image: node:14-alpine
+    container_name: yapi-server
+    working_dir: /opt/yapi/yapi-1.12.0
+    command: ["/bin/sh", "/opt/yapi/run_yapi.sh"]
+    ports:
+      - "3333:3000"
+    depends_on:
+      - mongo
+    volumes:
+      - ./yapi/yapi-1.12.0:/opt/yapi/yapi-1.12.0
+      - ./yapi/config.json:/opt/yapi/config.json
+      - ./run_yapi.sh:/opt/yapi/run_yapi.sh
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+
+volumes:
+  mongo-data: 
