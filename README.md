@@ -32,7 +32,15 @@ sudo docker-compose down -v
 
 ## 数据库管理
 
-可以通过宝塔面板（或其他客户端工具）添加远程数据库，账号密码详见`docker-compose.yml`中`mongo`下的`environment`
+可以使用任意MongoDB管理工具管理数据库，账号密码详见`docker-compose.yml`中`mongo`下的`environment`  
+新版的mongodb服务端和客户端（导入/导出）工具时分开的，可以在官网下载database-tools：  
+网址：https://www.mongodb.com/try/download/database-tools  
+
+Windows上导入现有数据库示例：
+
+```shell
+mongorestore.exe -h 127.0.0.1:37017 -u yapiadmin -p yapipassw --authenticationDatabase admin -d yapi .\yapi\
+```
 
 ## License
 
